@@ -44,11 +44,11 @@ import javafx.scene.layout.VBox;
 
 ////password health_or_hedonism  asd13368989012
 public class Main extends Application implements EventHandler<ActionEvent> {
-    static final String databasePrefix ="test"; // need to change
+    static final String databasePrefix ="test_health_hedo"; // need to change
     static final String netID ="root"; // Please enter your netId
     static final String hostName ="localhost"; //washington.uww.edu
     static final String databaseURL ="jdbc:mysql://"+hostName+"/"+databasePrefix+"?autoReconnect=true&useSSL=false&serverTimezone=CST";
-    static final String password="xiong123"; // please enter your own password
+    static final String password="asd13368989012"; // please enter your own password
     static Connection connection = null;
     static Statement statement = null;
     static ResultSet resultSet = null;
@@ -771,14 +771,16 @@ public class Main extends Application implements EventHandler<ActionEvent> {
         return null;
     }
 
+
     public void loginButton(Stage stage, String username, String password) {
         try {
-            username = '\"' + username + '\"';
-            password = '\"' + password + "\");";
-            String sqlQuery = " select * form user where username = " + username + ";";
+            String sqlQuery = "select * from user where username = ? and password = ?";
             System.out.println(sqlQuery);
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(sqlQuery);
+            preparedStmt = connection.prepareStatement(sqlQuery);
+            preparedStmt.setString(1, "shun");
+            preparedStmt.setString(1, "123");
+            resultSet = preparedStmt.executeQuery();
+
             ResultSetMetaData metaData = (ResultSetMetaData) resultSet.getMetaData();
             int columns = metaData.getColumnCount();
             for (int i=1; i<= columns; i++) {
@@ -786,6 +788,7 @@ public class Main extends Application implements EventHandler<ActionEvent> {
             }
 
             System.out.println();
+
 
             while (resultSet.next()) {
 
